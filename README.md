@@ -1,72 +1,81 @@
-# PromptWars Boilerplate
+# 🗳️ VoteBot - Global 2026 Election Assistant
+> **A High-Performance, AI-Driven Voting Guide for a Global Audience.**
+> *Built for the PromptWars Competition.*
 
-A production-grade boilerplate for PromptWars competition submissions with strict quality gates and security enforcement.
+[![Google Cloud Run](https://img.shields.io/badge/Hosted_on-Google_Cloud_Run-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white)](https://cloud.google.com/run)
+[![Gemini 3.1](https://img.shields.io/badge/Powered_by-Gemini_3_Flash-8E75B2?style=for-the-badge&logo=google-gemini&logoColor=white)](https://deepmind.google/technologies/gemini/)
+[![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 
-## Quick Start
+---
 
+## 🌟 Overview
+
+**VoteBot** is a production-grade, serverless web application designed to simplify the complex world of electoral participation. Unlike static information portals, VoteBot provides a **dynamic, interactive journey** through the three critical phases of democracy:
+
+1.  **Register:** Seamlessly identify deadlines and requirements based on your specific region.
+2.  **Research:** Access verified, non-hallucinated voting information.
+3.  **Vote:** Finalize your plan with clear instructions.
+
+## 🚀 Key Features
+
+### 🌍 Global-First Architecture
+VoteBot isn't just for one country. It features a scalable data engine currently supporting:
+- **United States:** Full state-level data (TX, CA, FL).
+- **India:** Specialized support for 2026 state-bound regions like Tamil Nadu, Kerala, and West Bengal.
+
+### ⚡ Interactive Experience
+- **Smart Dropdowns:** The bot dynamically generates selection menus in-chat, reducing friction and ensuring accurate data collection.
+- **Visual Timeline:** A real-time progress tracker at the top of the screen keeps users oriented.
+- **Celebratory UI:** Integrated `canvas-confetti` celebrations upon reaching the final voting milestone!
+
+### 🛡️ PromptWars Quality Gates
+- **Security:** Zero client-side API exposure. All LLM and Database calls are proxied through a secure FastAPI backend using Application Default Credentials (ADC).
+- **Efficiency:** Optimized Docker container (Python 3.11-slim) with a sub-second cold start on Google Cloud Run.
+- **Accessibility:** Semantic HTML5, FontAwesome icons, and high-contrast Tailwind CSS styling.
+
+---
+
+## 🏗️ Technical Stack
+
+| Layer | Technology | Purpose |
+| :--- | :--- | :--- |
+| **Cloud Hosting** | **Google Cloud Run** | Serverless container orchestration. |
+| **AI Brain** | **Gemini 3 Flash Preview** | Context-aware logic & Tool Calling. |
+| **Database** | **Firestore** | Persistent session tracking & State management. |
+| **Pipeline** | **Cloud Build** | Automated CI/CD & Image Registry. |
+| **Backend** | **FastAPI** | Async Python API serving static & dynamic content. |
+| **Frontend** | **Vanilla JS / Tailwind** | Ultra-lightweight, responsive user interface. |
+
+---
+
+## 🔧 Installation & Deployment
+
+### Local Development
 ```bash
-npm install && npm run judge-check
+# 1. Install dependencies
+pip install -r requirements.txt
+
+# 2. Authenticate Google Cloud
+gcloud auth application-default login
+
+# 3. Start the engine
+uvicorn main:app --host 0.0.0.0 --port 8080
 ```
 
-This runs the complete quality assurance pipeline to ensure your code meets all judging criteria.
+### Cloud Deployment
+```bash
+# Build and Push
+gcloud builds submit --tag gcr.io/[PROJECT_ID]/votebot
 
-## Available Scripts
+# Deploy to Cloud Run
+gcloud run deploy votebot \
+  --image gcr.io/[PROJECT_ID]/votebot \
+  --set-env-vars="GOOGLE_API_KEY=[YOUR_KEY]"
+```
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run lint` - Run ESLint checks
-- `npm run typecheck` - TypeScript validation
-- `npm run test` - Run test suite
-- `npm run test:coverage` - Run tests with coverage (80% threshold)
-- `npm run security:audit` - Security vulnerability scan
-- `npm run judge-check` - Full quality gates check (lint + typecheck + test + security)
+---
 
-## Key Features
+## 📝 License
+Distributed under the Apache 2.0 License. See `LICENSE` for more information.
 
-✅ **Security First** - Input sanitization, CSRF protection, secure headers  
-✅ **Code Quality** - ESLint + TypeScript with strict rules  
-✅ **Testing** - Vitest with 80% coverage requirement  
-✅ **Accessibility** - WCAG 2.1 AA compliance ready  
-✅ **Efficiency** - Optimized for performance (Lighthouse ≥90)  
-✅ **Google Services** - Gemini 3-pro-preview integration
-
-## Tech Stack
-
-- **Framework**: React 19
-- **Build Tool**: Vite 6
-- **Type Safety**: TypeScript 5.6
-- **Linting**: ESLint 9 + TypeScript ESLint
-- **Testing**: Vitest 2 with Coverage
-- **AI Model**: Gemini 3-pro-preview (see GEMINI.md)
-
-## Quality Gates
-
-All submissions must pass:
-- ✅ Zero ESLint errors/warnings
-- ✅ TypeScript strict mode
-- ✅ 80% test coverage minimum
-- ✅ No security vulnerabilities (audit-level: moderate)
-- ✅ WCAG 2.1 AA compliance
-
-## Documentation
-
-- **AGENTS.md** - Detailed judging criteria and requirements
-- **GEMINI.md** - Gemini model enforcement rules
-
-## Security Best Practices
-
-Never commit:
-- API keys or secrets (use environment variables)
-- .env files
-- Hardcoded credentials
-
-Always:
-- Sanitize user inputs
-- Use parameterized queries
-- Implement CSRF tokens
-- Handle errors gracefully
-- Follow Content Security Policy headers
-
-## License
-
-MIT
+**Built with ❤️ for PromptWars 2026.**

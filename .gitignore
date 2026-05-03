@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+.venv
+env/
+venv/
+node_modules/
+models.txt
+list_models.py
+.gemini/
+.DS_Store

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoteBot - Your Election Assistant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50 h-screen flex overflow-hidden font-sans">
+
+    <!-- Sidebar / Timeline -->
+    <aside class="w-80 bg-white border-r border-gray-200 flex flex-col shadow-lg z-10 relative">
+        <div class="p-6 border-b border-gray-100 flex items-center gap-3 bg-blue-600 text-white">
+            <i class="fa-solid fa-check-to-slot text-2xl"></i>
+            <h1 class="text-xl font-bold tracking-wide">VoteBot</h1>
+        </div>
+        
+        <div class="flex-1 p-6 overflow-y-auto">
+            <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-6">Your Voting Journey</h2>
+            
+            <div class="relative timeline-container">
+                <!-- Register Step -->
+                <div class="timeline-step active flex gap-4 mb-8" id="step-Register">
+                    <div class="relative flex flex-col items-center">
+                        <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center z-10 step-icon shadow-md">
+                            <i class="fa-solid fa-id-card"></i>
+                        </div>
+                        <div class="absolute top-8 w-0.5 h-full bg-gray-200 line-connector -bottom-8"></div>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-900 text-lg">1. Register</h3>
+                        <p class="text-sm text-gray-500 mt-1">Check your voter registration status and deadlines.</p>
+                    </div>
+                </div>
+
+                <!-- Research Step -->
+                <div class="timeline-step flex gap-4 mb-8" id="step-Research">
+                    <div class="relative flex flex-col items-center">
+                        <div class="w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center z-10 step-icon transition-colors">
+                            <i class="fa-solid fa-book-open"></i>
+                        </div>
+                        <div class="absolute top-8 w-0.5 h-full bg-gray-200 line-connector -bottom-8"></div>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-500 text-lg step-text transition-colors">2. Research</h3>
+                        <p class="text-sm text-gray-400 mt-1 step-desc transition-colors">Learn about candidates and ballot measures.</p>
+                    </div>
+                </div>
+
+                <!-- Vote Step -->
+                <div class="timeline-step flex gap-4" id="step-Vote">
+                    <div class="relative flex flex-col items-center">
+                        <div class="w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center z-10 step-icon transition-colors">
+                            <i class="fa-solid fa-envelope-open-text"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-500 text-lg step-text transition-colors">3. Vote</h3>
+                        <p class="text-sm text-gray-400 mt-1 step-desc transition-colors">Find your polling place or mail your ballot.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-6 border-t border-gray-100 bg-gray-50 text-center">
+            <p class="text-xs text-gray-500">2026 Election Assistant</p>
+        </div>
+    </aside>
+
+    <!-- Main Chat Area -->
+    <main class="flex-1 flex flex-col bg-slate-50 relative h-full">
+        <!-- Chat Header -->
+        <header class="bg-white p-4 shadow-sm flex items-center gap-3 border-b border-gray-200 z-10">
+            <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shadow-sm">
+                <i class="fa-solid fa-robot text-xl"></i>
+            </div>
+            <div>
+                <h2 class="font-bold text-gray-800">VoteBot Assistant</h2>
+                <p class="text-xs text-green-500 flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-green-500"></span> Online</p>
+            </div>
+        </header>
+
+        <!-- Messages Container -->
+        <div id="chat-container" class="flex-1 overflow-y-auto p-6 space-y-6 scroll-smooth">
+            <!-- Messages will be injected here -->
+        </div>
+
+        <!-- Suggestion Chips -->
+        <div id="suggestions" class="px-6 py-2 flex flex-wrap gap-2">
+            <!-- Buttons will be injected here -->
+        </div>
+
+        <!-- Typing Indicator Container (Hidden by default) -->
+        <div id="typing-indicator" class="hidden px-6 pb-2">
+
+            <div class="flex items-center gap-3 text-gray-500">
+                <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shadow-sm shrink-0">
+                    <i class="fa-solid fa-robot text-sm"></i>
+                </div>
+                <div class="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm border border-gray-100 flex gap-1 items-center">
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <footer class="p-4 bg-white border-t border-gray-200 z-10">
+            <form id="chat-form" class="max-w-4xl mx-auto flex gap-3 relative">
+                <input 
+                    type="text" 
+                    id="message-input" 
+                    class="flex-1 bg-gray-100 border-transparent focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-200 rounded-full px-6 py-3 outline-none transition-all duration-300 shadow-inner text-gray-700 placeholder-gray-400"
+                    placeholder="Type your message here..."
+                    autocomplete="off"
+                >
+                <button 
+                    type="submit" 
+                    id="send-button"
+                    class="bg-blue-600 hover:bg-blue-700 text-white w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 shadow-md transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                >
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </form>
+        </footer>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
