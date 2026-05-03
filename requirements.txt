@@ -3,3 +3,5 @@ uvicorn
 google-generativeai
 firebase-admin
 pydantic
+pytest
+httpx
