@@ -1,6 +1,6 @@
 # 🗳️ VoteBot - Global 2026 Election Assistant
 > **A High-Performance, AI-Driven Voting Guide for a Global Audience.**
-> *Built for the PromptWars Competition.*
+> *Built for the PromptWars 2026 Competition.*
 
 [![Google Cloud Run](https://img.shields.io/badge/Hosted_on-Google_Cloud_Run-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white)](https://cloud.google.com/run)
 [![Gemini 3.1](https://img.shields.io/badge/Powered_by-Gemini_3_Flash-8E75B2?style=for-the-badge&logo=google-gemini&logoColor=white)](https://deepmind.google/technologies/gemini/)
@@ -8,43 +8,50 @@
 
 ---
 
-## 🌟 Overview
+## 📂 Submission Details
 
-**VoteBot** is a production-grade, serverless web application designed to simplify the complex world of electoral participation. Unlike static information portals, VoteBot provides a **dynamic, interactive journey** through the three critical phases of democracy:
+### 🏢 Chosen Vertical
+**Civic Technology / Election Assistance**  
+VoteBot is designed to bridge the information gap in democratic participation by providing localized, real-time voting guidance through an intuitive AI interface.
 
-1.  **Register:** Seamlessly identify deadlines and requirements based on your specific region.
-2.  **Research:** Access verified, non-hallucinated voting information.
-3.  **Vote:** Finalize your plan with clear instructions.
+### 💡 Approach and Logic
+The project follows a **"State-Machine Chat"** approach:
+1.  **Context Injection:** On every user message, the backend injects the user's current session state (Location, Country, Progress Node) into the Gemini 3 Flash system prompt.
+2.  **Function Calling (Tools):** Instead of relying on LLM training data (which may be stale), VoteBot uses **Tool Calling** (`get_election_info`) to fetch verified 2026 deadlines and registration links from a curated backend database.
+3.  **State Persistence:** User progress is stored in **Firestore**, allowing for a persistent "Voting Journey" even across sessions.
+
+### ⚙️ How the Solution Works
+1.  **User Onboarding:** Upon first contact, VoteBot triggers an interactive dropdown to capture the user's Country and State.
+2.  **Guided Workflow:** The bot progresses through three distinct nodes: **Register** ➡️ **Research** ➡️ **Vote**. 
+3.  **Real-time Logic:** When a user asks about deadlines, the LLM calls the internal Python logic to retrieve the correct info for the user's specific region.
+4.  **Security & Scaling:** The app is containerized via **Docker** and deployed on **Google Cloud Run**, ensuring it can scale to zero when not in use and handle thousands of concurrent users instantly.
+
+### 📌 Assumptions Made
+- **2026 Focus:** All data provided by tools is specifically curated for the 2026 election cycle.
+- **Language:** The current implementation assumes English as the primary interface language.
+- **Regions:** While the engine is global, data is currently pre-populated for major states in the **USA** and **India** as a proof of concept.
+
+---
 
 ## 🚀 Key Features
 
-### 🌍 Global-First Architecture
-VoteBot isn't just for one country. It features a scalable data engine currently supporting:
-- **United States:** Full state-level data (TX, CA, FL).
-- **India:** Specialized support for 2026 state-bound regions like Tamil Nadu, Kerala, and West Bengal.
-
-### ⚡ Interactive Experience
-- **Smart Dropdowns:** The bot dynamically generates selection menus in-chat, reducing friction and ensuring accurate data collection.
-- **Visual Timeline:** A real-time progress tracker at the top of the screen keeps users oriented.
-- **Celebratory UI:** Integrated `canvas-confetti` celebrations upon reaching the final voting milestone!
-
-### 🛡️ PromptWars Quality Gates
-- **Security:** Zero client-side API exposure. All LLM and Database calls are proxied through a secure FastAPI backend using Application Default Credentials (ADC).
-- **Efficiency:** Optimized Docker container (Python 3.11-slim) with a sub-second cold start on Google Cloud Run.
-- **Accessibility:** Semantic HTML5, FontAwesome icons, and high-contrast Tailwind CSS styling.
+- **Smart Dropdowns:** In-chat interactive menus for friction-less selection.
+- **Visual Timeline:** Persistent progress tracking at the top of the UI.
+- **Celebratory UI:** Integrated `canvas-confetti` celebrations upon reaching milestones.
+- **Security First:** CSP headers, XSS protection, and secure middleware.
 
 ---
 
 ## 🏗️ Technical Stack
 
-| Layer | Technology | Purpose |
-| :--- | :--- | :--- |
-| **Cloud Hosting** | **Google Cloud Run** | Serverless container orchestration. |
-| **AI Brain** | **Gemini 3 Flash Preview** | Context-aware logic & Tool Calling. |
-| **Database** | **Firestore** | Persistent session tracking & State management. |
-| **Pipeline** | **Cloud Build** | Automated CI/CD & Image Registry. |
-| **Backend** | **FastAPI** | Async Python API serving static & dynamic content. |
-| **Frontend** | **Vanilla JS / Tailwind** | Ultra-lightweight, responsive user interface. |
+| Layer | Technology |
+| :--- | :--- |
+| **Cloud Hosting** | **Google Cloud Run** |
+| **AI Brain** | **Gemini 3 Flash Preview** |
+| **Database** | **Firestore** |
+| **Pipeline** | **Cloud Build** |
+| **Backend** | **FastAPI** |
+| **Frontend** | **Vanilla JS / Tailwind CSS** |
 
 ---
 
@@ -52,30 +59,19 @@ VoteBot isn't just for one country. It features a scalable data engine currently
 
 ### Local Development
 ```bash
-# 1. Install dependencies
 pip install -r requirements.txt
-
-# 2. Authenticate Google Cloud
 gcloud auth application-default login
-
-# 3. Start the engine
 uvicorn main:app --host 0.0.0.0 --port 8080
 ```
 
-### Cloud Deployment
+### Run Tests
 ```bash
-# Build and Push
-gcloud builds submit --tag gcr.io/[PROJECT_ID]/votebot
-
-# Deploy to Cloud Run
-gcloud run deploy votebot \
-  --image gcr.io/[PROJECT_ID]/votebot \
-  --set-env-vars="GOOGLE_API_KEY=[YOUR_KEY]"
+pytest test_main.py
 ```
 
 ---
 
 ## 📝 License
-Distributed under the Apache 2.0 License. See `LICENSE` for more information.
+Distributed under the Apache 2.0 License.
 
 **Built with ❤️ for PromptWars 2026.**
